@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#3e102c">
+  <meta name="description" content="Μια μικρή έκπληξη μόνο για τη Φένια. ❤️">
+  <title>Για τη Φένια ❤️ | Μια μικρή έκπληξη</title>
+  <style>
+    :root {
+      --wine: #3e102c;
+      --wine-2: #6d2046;
+      --rose: #e75e80;
+      --rose-2: #ff9eb3;
+      --cream: #fff9f4;
+      --ink: #3e1830;
+      --muted: #896777;
+      --gold: #e7c28c;
+      --shadow: 0 28px 80px rgba(25, 0, 22, .35);
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      margin: 0;
+      min-height: 100svh;
+      color: var(--cream);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: radial-gradient(ellipse at 12% 14%, #8e3157 0, transparent 35%),
+                  radial-gradient(ellipse at 89% 82%, #8c274c 0, transparent 36%),
+                  linear-gradient(155deg, #340e2b 0%, #521332 52%, #2c0a21 100%);
+      overflow-x: hidden;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .27;
+      background-image: radial-gradient(#ffe2cf 0.7px, transparent 0.7px);
+      background-size: 28px 28px;
+      mask-image: linear-gradient(120deg, transparent 5%, #000 58%, transparent 95%);
+    }
+    .ambient {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(65px);
+      opacity: .32;
+      pointer-events: none;
+      z-index: -1;
+      animation: glow 12s ease-in-out infinite alternate;
+    }
+    .ambient.a { width: 350px; height: 350px; background: #fb7aa3; top: -190px; right: -90px; }
+    .ambient.b { width: 300px; height: 300px; background: #dc8e76; bottom: -160px; left: -100px; animation-delay: -5s; }
+    .shell { min-height: 100svh; display: grid; place-items: center; padding: 55px 22px 40px; position: relative; isolation: isolate; }
+    .top-label { position: absolute; top: 22px; text-align: center; font-size: 10px; letter-spacing: .31em; font-weight: 750; color: #f9dcbf; text-transform: uppercase; opacity: .86; }
+    .heart-field { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0; }
+    .floating-heart { position: absolute; bottom: -45px; color: #ffc1cb; opacity: 0; animation: floatUp var(--dur) linear infinite; animation-delay: var(--delay); font-size: var(--size); left: var(--left); }
+    .card {
+      width: min(100%, 570px);
+      min-height: 570px;
+      background: linear-gradient(175deg, #fffdf9, #fff2ed);
+      color: var(--ink);
+      border: 1px solid rgba(255, 233, 228, .78);
+      border-radius: 28px;
+      box-shadow: var(--shadow), 0 0 0 8px rgba(255, 255, 255, .05);
+      padding: clamp(32px, 7vw, 57px) clamp(24px, 7vw, 52px) 34px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+    }
+    .card::before, .card::after { content: "✦"; position: absolute; color: #d8b18b; opacity: .7; font-size: 19px; }
+    .card::before { top: 24px; left: 27px; }
+    .card::after { bottom: 24px; right: 27px; }
+    .stage { display: none; opacity: 0; transform: translateY(12px); }
+    .stage.active { display: block; animation: enter .65s cubic-bezier(.2,.8,.25,1) forwards; }
+    .eyebrow { font-size: 11px; letter-spacing: .27em; text-transform: uppercase; color: #b46d79; font-weight: 800; margin: 0 0 20px; }
+    .title { font-family: Georgia, "Times New Roman", serif; font-size: clamp(32px, 6.7vw, 47px); line-height: 1.18; font-weight: 500; letter-spacing: -.035em; margin: 0 auto 20px; max-width: 460px; }
+    .title em { font-style: italic; color: #c13e66; }
+    .body-text { color: #866173; font-size: 16px; line-height: 1.8; margin: 0 auto 26px; max-width: 380px; }
+    .primary {
+      background: linear-gradient(125deg, #cf4268, #e86b87);
+      border: 1px solid #e46f8c;
+      color: white;
+      padding: 16px 26px;
+      border-radius: 100px;
+      box-shadow: 0 11px 24px rgba(195, 60, 100, .25);
+      font: 750 15px/1.3 inherit;
+      font-family: inherit;
+      font-weight: 750;
+      font-size: 15px;
+      cursor: pointer;
+      transition: transform .22s ease, box-shadow .22s ease;
+    }
+    .primary:hover { transform: translateY(-3px); box-shadow: 0 16px 30px rgba(195, 60, 100, .32); }
+    .primary:active { transform: translateY(0) scale(.97); }
+    .primary:focus-visible, .secondary:focus-visible, .sound:focus-visible, .text-button:focus-visible { outline: 3px solid #e6ad63; outline-offset: 4px; }
+    .secondary { border: 1px solid #e6bbc5; background: transparent; color: #a65a72; padding: 15px 25px; border-radius: 100px; font-size: 15px; font-weight: 650; font-family: inherit; cursor: pointer; transition: background .2s ease, transform .2s ease; }
+    .secondary:hover { background: #ffe6e9; transform: translateY(-2px); }
+    .envelope-wrap { width: 240px; height: 185px; position: relative; margin: 5px auto 36px; filter: drop-shadow(0 15px 14px rgba(112, 54, 70, .12)); animation: envelopeFloat 4s ease-in-out infinite; }
+    .envelope { width: 220px; height: 148px; position: absolute; bottom: 0; left: 10px; border-radius: 7px 7px 11px 11px; background: linear-gradient(120deg, #f5c0c3, #eda8b5); box-shadow: inset 0 0 0 1px #db8e9d; overflow: hidden; }
+    .envelope::before { content: ""; position: absolute; left: 0; bottom: -1px; border-left: 110px solid #f6c7c8; border-right: 110px solid #f6c7c8; border-top: 80px solid transparent; z-index: 2; }
+    .envelope::after { content: ""; position: absolute; inset: 0; clip-path: polygon(0 0, 50% 53%, 100% 0); background: #f8d8d2; z-index: 1; }
+    .paper { width: 167px; height: 124px; position: absolute; z-index: 0; top: 11px; left: 36px; background: #fff7ed; border-radius: 4px; box-shadow: 0 0 0 1px #e8caba; padding: 28px 10px; font: italic 20px Georgia, serif; color: #ae5072; }
+    .stamp { position: absolute; top: 88px; left: calc(50% - 20px); z-index: 3; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: #b94a6e; color: #fff2eb; border: 3px solid #f4b2c0; font-size: 20px; box-shadow: 0 3px 8px rgba(112, 36, 61, .2); }
+    .caption { color: #ac7180; font-size: 12px; letter-spacing: .05em; margin-top: 24px; }
+    .letter { margin: 4px auto 23px; padding: 30px 25px; max-width: 410px; text-align: left; background: #fffdfa; border: 1px solid #f4e2d8; box-shadow: 0 9px 28px rgba(136, 78, 93, .08); transform: rotate(-1deg); border-radius: 7px; }
+    .letter .salutation { font: italic 24px Georgia, serif; color: #b44d70; margin: 0 0 18px; }
+    .letter p:not(.salutation) { font: 17px/1.85 Georgia, serif; color: #644152; margin: 0 0 18px; }
+    .letter .signoff { text-align: right; color: #b44d70 !important; font-style: italic !important; margin-bottom: 0 !important; }
+    .mini-heart { font-size: 34px; line-height: 1; margin-bottom: 12px; display: block; animation: heartbeat 3s ease-in-out infinite; }
+    .date-line { display: inline-flex; align-items: center; gap: 8px; border: 1px solid #f1d4d9; border-radius: 50px; background: #fffafa; font-size: 12px; color: #ae6076; padding: 9px 16px; margin: 0 0 22px; font-weight: 750; }
+    .actions { display: flex; justify-content: center; align-items: center; flex-wrap: wrap; gap: 12px; margin-top: 15px; }
+    #hint { min-height: 46px; font-size: 13px; line-height: 1.5; margin: 20px auto 0; color: #b05f7c; max-width: 360px; font-style: italic; }
+    .heart-burst { width: 110px; height: 110px; background: linear-gradient(145deg, #fff0ef, #fbd6dc); border: 1px solid #f6bdcb; border-radius: 50%; display: grid; place-items: center; margin: 4px auto 25px; box-shadow: 0 0 0 13px rgba(232, 119, 146, .07); }
+    .heart-burst span { font-size: 58px; animation: heartbeat 2s ease-in-out infinite; }
+    .ticket { margin: 15px auto 24px; padding: 21px; background: #fffaf6; border: 1.5px dashed #e8b3c0; border-radius: 15px; max-width: 365px; }
+    .ticket-label { font-size: 11px; color: #be788c; letter-spacing: .21em; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; }
+    .ticket-date { font: 26px Georgia, serif; color: #672740; margin-bottom: 6px; }
+    .ticket-sub { font-size: 13px; color: #a57686; }
+    .small-note { font: italic 16px/1.55 Georgia, serif; color: #9e6278; margin-top: 23px; }
+    .bottom-label { position: absolute; bottom: 14px; text-align: center; font: 12px Georgia, serif; letter-spacing: .025em; color: #f1c5ce; opacity: .85; }
+    .sound { position: absolute; top: 15px; right: 16px; border: 1px solid #edced3; background: #fff8f6; color: #9c5268; border-radius: 50px; font-size: 12px; padding: 8px 11px; font-family: inherit; cursor: pointer; z-index: 2; }
+    .text-button { display: inline-block; margin-top: 5px; border: none; padding: 12px; font-family: inherit; font-size: 12px; background: none; text-decoration: underline; text-underline-offset: 3px; color: #a56a80; cursor: pointer; }
+    #confetti { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 6; }
+    .confetti { position: absolute; left: var(--x); top: -40px; color: var(--color); font-size: var(--size); animation: fall var(--time) var(--delay) linear forwards; text-shadow: 0 3px 5px rgba(0, 0, 0, .07); }
+
+    /* A cheeky cameo from Emile of Ratatouille, next to the sender's name. */
+    .sender-row {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; margin: -4px auto 20px; min-height: 125px;
+    }
+    .sender-name {
+      color: #b53a64; font: 700 clamp(21px, 5vw, 28px)/1.25 Georgia, serif;
+      letter-spacing: -.04em; text-align: right;
+      text-wrap: balance;
+    }
+    .emile-portrait { display: block; position: relative; flex: 0 0 122px; width: 122px; height: 132px; margin: 0; }
+    .emile-portrait svg, .emile-portrait img {
+      display: block; position: absolute; width: 100%; height: 100%;
+      top: 0; left: 0; object-fit: contain;
+    }
+    .emile-portrait img { opacity: 0; transition: opacity .2s ease; filter: drop-shadow(0 5px 8px #9b61763d); }
+    .emile-portrait img.loaded { opacity: 1; }
+    .emile-portrait svg { filter: drop-shadow(0 6px 7px #9b61763a); }
+    .tiny-source { display: block; font-size: 9px; color: #9b7785; margin: -14px auto 14px; }
+    .tiny-source a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+    #no { position: relative; }
+    #no.no-pop { animation: noWiggle .34s ease-in-out; }
+    @keyframes noWiggle {
+      0%, 100% { transform: translateX(0) rotate(0); }
+      20% { transform: translateX(-5px) rotate(-4deg); }
+      40% { transform: translateX(5px) rotate(4deg); }
+      60% { transform: translateX(-4px) rotate(-3deg); }
+      80% { transform: translateX(3px) rotate(2deg); }
+    }
+    @keyframes floatUp { 0% { transform: translateY(0) rotate(-15deg); opacity: 0; } 8% { opacity: .26; } 88% { opacity: .24; } 100% { transform: translateY(-115vh) rotate(33deg); opacity: 0; } }
+    @keyframes enter { to { opacity: 1; transform: translateY(0); } }
+    @keyframes heartbeat { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+    @keyframes envelopeFloat { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-8px) rotate(1deg); } }
+    @keyframes glow { to { transform: translate(55px, -20px); opacity: .22; } }
+    @keyframes fall { 0% { transform: translate3d(0, -30px, 0) rotate(0); opacity: 0; } 7% { opacity: 1; } 100% { transform: translate3d(var(--drift), 108vh, 0) rotate(var(--spin)); opacity: 0; } }
+    @media (max-width: 540px) {
+      .shell { padding: 52px 14px 42px; }
+      .card { min-height: 545px; padding: 55px 22px 30px; border-radius: 23px; }
+      .letter { padding: 25px 19px; }
+      .letter p:not(.salutation) { font-size: 16px; }
+      .title { font-size: clamp(31px, 8.4vw, 40px); }
+      .body-text { font-size: 15px; }
+      .top-label { top: 19px; font-size: 9px; }
+      .sender-row { gap: 0; min-height: 100px; }
+      .sender-name { font-size: clamp(19px, 5.7vw, 25px); }
+      .emile-portrait { flex-basis: 98px; width: 98px; height: 115px; }
+      .envelope-wrap { margin-bottom: 24px; }
+
+      .bottom-label { font-size: 11px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; scroll-behavior: auto !important; }
+      .stage.active { opacity: 1; transform: none; }
+      .floating-heart, .confetti { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient a" aria-hidden="true"></div>
+  <div class="ambient b" aria-hidden="true"></div>
+  <div class="heart-field" id="hearts" aria-hidden="true"></div>
+  <div id="confetti" aria-hidden="true"></div>
+
+  <main class="shell">
+    <div class="top-label">A little love story · 14.02.2027</div>
+    <article class="card" aria-label="Μια πρόσκληση για τη Φένια">
+      <button class="sound" id="sound" type="button" aria-pressed="false" title="Προαιρετικοί απαλοί ήχοι">♪ Ήχος: off</button>
+
+      <section class="stage active" id="intro" aria-labelledby="intro-title">
+        <p class="eyebrow">Παραλήπτρια: Φένια 💌</p>
+        <div class="envelope-wrap" aria-hidden="true">
+          <div class="paper">Για σένα ♡</div>
+          <div class="envelope"></div>
+          <div class="stamp">♥</div>
+        </div>
+        <h1 class="title" id="intro-title">Έχεις ένα <em>πολύ προσωπικό</em> μήνυμα από τον…</h1>
+        <div class="sender-row">
+          <span class="sender-name">EMIL(ιούκο σου) 💌</span>
+          <figure class="emile-portrait" aria-label="Ο Εμίλ από το Ratatouille με τυρί">
+            <svg viewBox="0 0 150 170" role="img" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="emile-body" cx="40%" cy="31%" r="74%"><stop offset="0" stop-color="#b87a55"/><stop offset="1" stop-color="#72402f"/></radialGradient>
+                <linearGradient id="emile-cheese" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffe98a"/><stop offset="1" stop-color="#f2ae3e"/></linearGradient>
+              </defs>
+              <path d="M38 129Q12 143 3 126" fill="none" stroke="#dc9a91" stroke-width="7" stroke-linecap="round"/>
+              <ellipse cx="76" cy="109" rx="58" ry="56" fill="url(#emile-body)"/>
+              <circle cx="32" cy="38" r="24" fill="#80503b"/><circle cx="32" cy="38" r="16" fill="#d28a84"/>
+              <circle cx="118" cy="33" r="24" fill="#80503b"/><circle cx="118" cy="33" r="16" fill="#d28a84"/>
+              <ellipse cx="77" cy="56" rx="53" ry="47" fill="url(#emile-body)"/>
+              <ellipse cx="60" cy="46" rx="12" ry="17" fill="#fff6e8"/>
+              <ellipse cx="91" cy="44" rx="12" ry="17" fill="#fff6e8"/>
+              <circle cx="64" cy="49" r="5.4" fill="#34251f"/><circle cx="89" cy="47" r="5.4" fill="#34251f"/>
+              <ellipse cx="78" cy="78" rx="30" ry="20" fill="#a96f54"/>
+              <path d="M61 85q17 18 35-1" stroke="#462c28" stroke-width="3" stroke-linecap="round" fill="none"/>
+              <ellipse cx="79" cy="72" rx="11" ry="8" fill="#db9893"/>
+              <path d="M68 77l-39-10M68 81l-40 1M90 77l34-11M90 81l37 3" stroke="#e6d7c9" stroke-linecap="round" stroke-width="1.7"/>
+              <path d="M43 112Q72 100 124 114L104 153Q72 161 43 138Z" fill="url(#emile-cheese)" stroke="#e8a349" stroke-width="2"/>
+              <circle cx="78" cy="124" r="7" fill="#e9b253"/><circle cx="98" cy="143" r="5" fill="#e9b253"/><circle cx="104" cy="116" r="4" fill="#e9b253"/>
+              <ellipse cx="39" cy="120" rx="11" ry="9" transform="rotate(-24 39 120)" fill="#c18373"/>
+              <ellipse cx="128" cy="121" rx="11" ry="9" transform="rotate(24 128 121)" fill="#c18373"/>
+              <path d="M45 154q-8 3-13 10M102 159q5 4 10 5" stroke="#bf857a" stroke-width="7" stroke-linecap="round"/>
+            </svg>
+            <img id="emile-image"
+              src="https://w7.pngwing.com/pngs/319/12/png-transparent-ratatouille-emile-remy-pixar-animated-film-ratatuille-mammal-food-mouse.png"
+              alt="Ο χαμογελαστός Εμίλ από το Ratatouille, κρατώντας τυρί" loading="eager"
+              onload="this.classList.add('loaded')"
+              onerror="this.style.display='none'">
+          </figure>
+        </div>
+        <p class="body-text">Δεν είναι διαφήμιση. Δεν είναι spam.<br>Είναι κάτι που φτιάχτηκε αποκλειστικά για σένα. ❤️</p>
+        <button type="button" class="primary" data-next="letter">Άνοιξε τον φάκελο ✉️</button>
+        <p class="caption">Υπόσχομαι ότι αξίζει να το ανοίξεις.</p>
+      </section>
+
+      <section class="stage" id="letter" aria-labelledby="letter-title">
+        <p class="eyebrow">Μια μικρή εξομολόγηση · 01/02</p>
+        <h2 class="title" id="letter-title">Μόνο για <em>σένα.</em></h2>
+        <div class="letter">
+          <p class="salutation">Αγαπημένη μου Φένια,</p>
+          <p>Θα μπορούσα να σου στείλω απλώς ένα μήνυμα.</p>
+          <p>Αλλά για κάτι τόσο σημαντικό ήθελα να φτιάξω μια μικρή έκπληξη, με τον δικό μας τρόπο. Κάτι που θα σου φέρει ένα χαμόγελο.</p>
+          <p>Είσαι ο πιο υπέροχος άνθρωπος του κόσμου και είμαι πραγματικά ευγνώμων για αυτό. ❤️</p>
+          <p>Λοιπόν… είσαι έτοιμη για την πιο σημαντική ερώτηση; 💗</p>
+          <p class="signoff">Με αγάπη,<br>ο Αιμιλιούκος σου</p>
+        </div>
+        <button type="button" class="primary" data-next="question">Είμαι έτοιμη 💞</button>
+      </section>
+
+      <section class="stage" id="question" aria-labelledby="question-title">
+        <p class="eyebrow">Η μεγάλη ερώτηση · 02/02</p>
+        <span class="mini-heart" aria-hidden="true">💗</span>
+        <div class="date-line">✧ Κυριακή, 14 Φεβρουαρίου 2027 ✧</div>
+        <h2 class="title" id="question-title">Φένια, θα γίνεις η <em>Valentine</em> μου;</h2>
+        <p class="body-text">Μία μόνο θέση. Μία μόνο επιλογή.<br>Και ελπίζω να είναι η πιο όμορφη. ❤️</p>
+        <div class="actions">
+          <button type="button" class="primary" id="yes">ΝΑΙΙΙ! 💘</button>
+          <button type="button" class="secondary" id="no">Όχι 🙈</button>
+        </div>
+        <div id="hint" role="status" aria-live="polite"></div>
+      </section>
+
+      <section class="stage" id="success" aria-labelledby="success-title">
+        <p class="eyebrow">ΕΠΙΣΗΜΗ ΑΝΑΚΟΙΝΩΣΗ ♡</p>
+        <div class="heart-burst" aria-hidden="true"><span>💖</span></div>
+        <h2 class="title" id="success-title">Έχω την πιο όμορφη <em>Valentine!</em></h2>
+        <p class="body-text">Φένια, μόλις έκανες τη μέρα μου ακόμα πιο ξεχωριστή. Το μόνο που χρειάζεται να φέρεις είναι το χαμόγελό σου. Τα υπόλοιπα άσ' τα πάνω μου. 🥹❤️</p>
+        <div class="ticket">
+          <div class="ticket-label">Μια πρόσκληση για δύο</div>
+          <div class="ticket-date">14 Φεβρουαρίου 2027</div>
+          <div class="ticket-sub">Dress code: το πιο όμορφό σου χαμόγελο ✨</div>
+        </div>
+        <button class="primary" type="button" id="copy">Αντιγραφή του ΝΑΙ μου 💌</button>
+        <button class="text-button" type="button" id="restart">Ξανά από την αρχή</button>
+        <p class="small-note">Φιλάκια πολλά,<br>ο Αιμιλιούκος σου 💋</p>
+      </section>
+    </article>
+    <div class="bottom-label">Handmade with love, just for Fenia ♡</div>
+  </main>
+
+  <script>
+    (() => {
+      'use strict';
+      const stages = document.querySelectorAll('.stage');
+      const soundButton = document.getElementById('sound');
+      const hint = document.getElementById('hint');
+      const noButton = document.getElementById('no');
+      const confettiBox = document.getElementById('confetti');
+      let noClicks = 0;
+      let audioEnabled = false;
+      let audioContext;
+
+      function chime(notes = [523.25, 659.25]) {
+        if (!audioEnabled) return;
+        try {
+          const AC = window.AudioContext || window.webkitAudioContext;
+          if (!AC) return;
+          audioContext ||= new AC();
+          if (audioContext.state === 'suspended') audioContext.resume();
+          const start = audioContext.currentTime;
+          notes.forEach((freq, idx) => {
+            const osc = audioContext.createOscillator();
+            const volume = audioContext.createGain();
+            osc.type = 'sine';
+            osc.frequency.value = freq;
+            volume.gain.setValueAtTime(.0001, start + idx * .14);
+            volume.gain.exponentialRampToValueAtTime(.055, start + idx * .14 + .018);
+            volume.gain.exponentialRampToValueAtTime(.0001, start + idx * .14 + .34);
+            osc.connect(volume);
+            volume.connect(audioContext.destination);
+            osc.start(start + idx * .14);
+            osc.stop(start + idx * .14 + .36);
+          });
+        } catch (_) { /* Sound is optional; the page works without it. */ }
+      }
+
+      function show(id) {
+        stages.forEach(stage => {
+          stage.classList.toggle('active', stage.id === id);
+          stage.hidden = stage.id !== id;
+        });
+        chime();
+        const target = document.querySelector('#' + id + ' button.primary');
+        if (target) setTimeout(() => target.focus({ preventScroll: true }), 90);
+      }
+      // Ensure hidden slides don't receive keyboard focus when the page first loads.
+      stages.forEach(stage => { stage.hidden = !stage.classList.contains('active'); });
+      document.querySelectorAll('[data-next]').forEach(button => {
+        button.addEventListener('click', () => show(button.dataset.next));
+      });
+      soundButton.addEventListener('click', () => {
+        audioEnabled = !audioEnabled;
+        soundButton.textContent = audioEnabled ? '♪ Ήχος: on' : '♪ Ήχος: off';
+        soundButton.setAttribute('aria-pressed', String(audioEnabled));
+        if (audioEnabled) chime([659.25, 783.99]);
+      });
+
+      // 24 different funny replies. They loop so the game never runs out of jokes.
+      const hints = [
+        'Χμμ… νομίζω ότι αυτό το κουμπί μπήκε κατά λάθος. 😇',
+        'Περίμενε, πάτησες το κουμπί με το λάθος χρώμα! 😂',
+        'Να καλέσω τεχνικό; Το «ΝΑΙ» είναι ακριβώς δίπλα. 🛠️',
+        'Ο Εμίλ από το Ratatouille μόλις άφησε το τυρί από την απορία του. 🧀',
+        'Δίνω δεύτερη ευκαιρία! Και σοκολάτα αν χρειαστεί. 🍫',
+        'Η επιτροπή του Αγίου Βαλεντίνου ζήτησε επανεξέταση. 💌',
+        'Να σου φέρω γυαλιά; Το «ΝΑΙ» είναι αυτό με την καρδούλα. 👓',
+        'Μήπως σου γλίστρησε το δαχτυλάκι; ☝️😂',
+        'Δεν έχω προσλάβει τόσους προγραμματιστές για τέτοια κατάληξη. (Εμένα δηλαδή.) 💻',
+        'Ενεργοποιείται το σχέδιο Β: περισσότερα φιλάκια. 😘',
+        'Αγαπητή κυρία Φένια, η αίτησή σας δεν εγκρίθηκε. Παρακαλώ δοκιμάστε «ΝΑΙ». 📝',
+        'Έχω ενημερώσει τον Εμίλ. Είναι απογοητευμένος αλλά συνεχίζει να τρώει. 🐀',
+        'Εδώ το «Όχι» είναι για διακόσμηση. Όπως το μαϊντανό στο πιάτο. 🌿',
+        'Πάμε πάλι! 3… 2… 1… και πάτα το σωστό αυτή τη φορά. 🚀',
+        'Αν περιμένεις να εξαφανιστεί το «ΝΑΙ», κακή σου τύχη. 😌',
+        'Μέχρι κι ο Ρεμί έφτιαξε ριζότο περιμένοντας την απάντησή σου. 🍚',
+        'Θέλεις να το συζητήσουμε με ένα γλυκό; Ή με δέκα; 🍰',
+        'Αυτό είναι πλέον επιστημονικό πείραμα υπομονής του Αιμιλιούκου. 🧪',
+        'Το τμήμα εξυπηρέτησης καρδιών θα απαντήσει εντός 0,3 δευτερολέπτων. 💗',
+        'Φένια, προσοχή: παρατηρείται ασυνήθιστα πολλή χρήση του κουμπιού «Όχι». 🚨',
+        'Θα βάλω τον Εμίλ να κάνει τον διαπραγματευτή. Έρχεται με τυρί. 🧀',
+        'Να ξέρεις, έφτιαξα ΟΛΟΚΛΗΡΗ ιστοσελίδα και εσύ πατάς αυτό; 😂❤️',
+        'Εντάξει, μικρό διάλειμμα! Αλλά το «ΝΑΙ» εξακολουθεί να σε περιμένει. 🥹',
+        'Τελευταία ανακοίνωση: ο Αιμιλιούκος σε αγαπάει ανεξαρτήτως κουμπιού. ❤️'
+      ];
+      const noLabels = ['Όχι 🙈', 'Σίγουρα όχι; 🤔', 'Ούτε λίγο; 🥺', 'Χμμ… όχι; 🧀', 'Πάλι όχι; 😂', 'Επιμένω! 🙃', 'Ακόμα εδώ; 😜'];
+      noButton.addEventListener('click', () => {
+        hint.textContent = hints[noClicks % hints.length];
+        noClicks++;
+        noButton.textContent = noLabels[noClicks % noLabels.length];
+        noButton.classList.remove('no-pop');
+        void noButton.offsetWidth; // Restart the silly wiggle animation for each click.
+        noButton.classList.add('no-pop');
+        chime([392, 349.23]);
+      });
+
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const floatHearts = document.getElementById('hearts');
+      if (!prefersReducedMotion) {
+        for (let i = 0; i < 17; i++) {
+          const el = document.createElement('span');
+          el.className = 'floating-heart';
+          el.textContent = i % 3 === 0 ? '♥' : '♡';
+          el.style.setProperty('--left', ((i * 37 + 11) % 100) + '%');
+          el.style.setProperty('--delay', (-i * 2.3) + 's');
+          el.style.setProperty('--dur', (12 + i % 8) + 's');
+          el.style.setProperty('--size', (13 + i % 15) + 'px');
+          floatHearts.appendChild(el);
+        }
+      }
+      function celebrate() {
+        if (prefersReducedMotion) return;
+        confettiBox.replaceChildren();
+        const pieces = ['♥', '♡', '✦', '✿', '❤'];
+        const colors = ['#f6aec6', '#ffd6a5', '#fff5eb', '#d7809b', '#e5c28e'];
+        for (let i = 0; i < 75; i++) {
+          const el = document.createElement('span');
+          el.className = 'confetti';
+          el.textContent = pieces[i % pieces.length];
+          el.style.setProperty('--x', ((i * 53 + 7) % 100) + 'vw');
+          el.style.setProperty('--color', colors[i % colors.length]);
+          el.style.setProperty('--size', (12 + i % 15) + 'px');
+          el.style.setProperty('--time', (3 + (i % 7) / 3) + 's');
+          el.style.setProperty('--delay', (i % 10) * .10 + 's');
+          el.style.setProperty('--drift', ((i % 2 ? 1 : -1) * (30 + i % 120)) + 'px');
+          el.style.setProperty('--spin', (i % 2 ? 500 : -500) + 'deg');
+          confettiBox.appendChild(el);
+        }
+        setTimeout(() => confettiBox.replaceChildren(), 6800);
+      }
+      document.getElementById('yes').addEventListener('click', () => {
+        show('success');
+        chime([523.25, 659.25, 783.99, 1046.5]);
+        celebrate();
+      });
+      document.getElementById('copy').addEventListener('click', async event => {
+        const msg = 'ΝΑΙΙΙ! 💘 Θα είμαι η Valentine σου στις 14 Φεβρουαρίου! ❤️';
+        try {
+          await navigator.clipboard.writeText(msg);
+          event.currentTarget.textContent = 'Αντιγράφηκε! 💌';
+        } catch (_) {
+          event.currentTarget.textContent = 'Στείλε μου: ΝΑΙΙΙ! 💘';
+        }
+      });
+      document.getElementById('restart').addEventListener('click', () => {
+        noClicks = 0;
+        hint.textContent = '';
+        noButton.textContent = 'Όχι 🙈';
+        document.getElementById('copy').textContent = 'Αντιγραφή του ΝΑΙ μου 💌';
+        confettiBox.replaceChildren();
+        show('intro');
+      });
+    })();
+  </script>
+</body>
+</html>
